@@ -6,12 +6,14 @@ export interface StringifyOptions {
     pretty?: boolean
     breakLength?: number
     quote?: "single" | "double"
+    indent?: string
+    lineEnding?: string
 }
 
 export function stringify(tag: nbt.Tag, options: StringifyOptions = {}): string {
     const pretty = !!options.pretty, breakLength = options.breakLength || 70
     const quoteChar = options.quote == "single" ? "'" : options.quote == "double" ? '"' : null
-    const spaces = " ".repeat(4)
+    const spaces = options.indent || " ".repeat(4)
 
     function escapeString(text: string) {
         let q = quoteChar ?? '"'
@@ -59,8 +61,8 @@ export function stringify(tag: nbt.Tag, options: StringifyOptions = {}): string 
                     return `${key}:${space}${stringify(tag!, depth + 1)}`
                 })
             if (pretty && pairs.reduce((acc, x) => acc + x.length, 0) > breakLength) {
-                return `{\n${pairs.map(text => spaces.repeat(depth)
-                    + text).join(",\n")}\n${spaces.repeat(depth - 1)}}`
+                return `{${options.lineEnding || ""}\n${pairs.map(text => spaces.repeat(depth)
+                    + text).join(`,${options.lineEnding || ""}\n`)},${options.lineEnding || ""}\n${spaces.repeat(depth - 1)}}`
             } else {
                 return `{${space}${pairs.join(sep)}${space}}`
             }
