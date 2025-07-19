@@ -31,7 +31,12 @@ export class Int {
 
 export class Float {
     constructor(public value: number) { }
-    valueOf() { return this.value }
+    valueOf(forceDecimals?: boolean): string {
+        if (forceDecimals && this.value % 1 === 0) {
+            return this.value.toString() + ".0"
+        }
+        return this.value.toString()
+    }
 }
 
 export interface TagArray extends Array<Tag> { }

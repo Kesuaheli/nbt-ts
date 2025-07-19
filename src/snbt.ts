@@ -8,6 +8,7 @@ export interface StringifyOptions {
     quote?: "single" | "double"
     indent?: string
     lineEnding?: string
+    forceDecimals?: boolean
 }
 
 export function stringify(tag: nbt.Tag, options: StringifyOptions = {}): string {
@@ -36,7 +37,7 @@ export function stringify(tag: nbt.Tag, options: StringifyOptions = {}): string 
         else if (tag instanceof nbt.Short) return `${tag.value}s`
         else if (tag instanceof nbt.Int) return `${tag.value | 0}`
         else if (typeof tag == "bigint") return `${tag}l`
-        else if (tag instanceof nbt.Float) return `${tag.value}f`
+        else if (tag instanceof nbt.Float) return `${tag.valueOf(options.forceDecimals)}f`
         else if (typeof tag == "number")
             return Number.isInteger(tag) ? `${tag}.0` : tag.toString()
         else if (typeof tag == "string") return escapeString(tag)
