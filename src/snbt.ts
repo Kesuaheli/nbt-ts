@@ -64,7 +64,7 @@ export function stringify(tag: nbt.Tag, options: StringifyOptions = {}): string 
                 return `{${options.lineEnding || ""}\n${pairs.map(text => spaces.repeat(depth)
                     + text).join(`,${options.lineEnding || ""}\n`)},${options.lineEnding || ""}\n${spaces.repeat(depth - 1)}}`
             } else {
-                return `{${space}${pairs.join(sep)}${space}}`
+                return `{${pairs.join(sep)}}`
             }
         }
     }
