@@ -48,8 +48,8 @@ export function stringify(tag: nbt.Tag, options: StringifyOptions = {}): string 
             const list = tag.map(tag => stringify(tag, depth + 1))
             if (list.reduce((acc, x) => acc + x.length, 0) > breakLength
                 || list.some(text => text.includes("\n"))) {
-                return `[\n${list.map(text => spaces.repeat(depth)
-                    + text).join(",\n")}\n${spaces.repeat(depth - 1)}]`
+                return `[${options.lineEnding || ""}\n${list.map(text => spaces.repeat(depth)
+                    + text).join(`,${options.lineEnding || ""}\n`)},${options.lineEnding || ""}\n${spaces.repeat(depth - 1)}]`
             } else {
                 return `[${list.join(sep)}]`
             }
